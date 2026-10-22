@@ -1,59 +1,75 @@
 # Проект FitLife - MVP версия 1.0
+from constants import THE_CUTOFF, WATER_PER_KG
 
 
-# 1. Знакомство
-# Спрашиваем и сохраняем в переменную имя польвователя
-# Делаем первую введенную букву всегда заглавной
-user_name = (input("Как Вас зовут?  ")).title()
-# Выводим приветствие испозьзуя введеное пользователем имя
+# Запрашиваем данные пользователя
+user_name = (input("Как Вас зовут?  ")).strip().title()
 print(f"Добрый день, {user_name}!")
-# Спрашиваем и сохраням в переменную возраст пользователя, преобразовав в число
-user_age = (input("Сколько Вам полных лет?  "))
+while True:
+    user_age_in = input("Сколько Вам полных лет?  ")
+    try:
+        user_age = int(user_age_in)
+        if user_age <= 0:
+            print('Возраст должен быть больше 0. Попробуйте еще раз.')
+            continue
+        break
+    except ValueError:
+        print('Пожалуйста, введите корректное число.')
 
 
-# 2. Сбор данных
-# Запрашиваем вес в кг и сохраняем в переменную преобразовав в float
-user_weight = float(input("Укажите Ваш вес (в кг): "))
-# Запрашиваем рост пользователя в см (для удобства пользователя)
-# и сохраняем в переменную преобразовав в float
-user_height_m = float(input("Укажите Ваш рост (в м): "))
+while True:
+    user_weight_in = input("Укажите Ваш вес (в кг): ").strip()
+    user_weight_optim = user_weight_in.replace(',', '.')
+    try:
+        user_weight = float(user_weight_optim)
+        break
+    except ValueError:
+        print('Пожалуйста, введите корректный вес (число).')
 
 
-# 3. Логика расчетов (Функции как "черный ящик": используем арифметику)
-# Формула ИМТ: вес разделить на (рост в квадрате)
-# Используя формулу узнаем Индекс массы тела
-bmi = user_weight / user_height_m ** 2
+while True:
+    user_height_in = input("Укажите Ваш рост (в м): ").strip()
+    user_height_optim = user_height_in.replace(',', '.')
+    try:
+        user_height = float(user_height_optim)
+        break
+    except ValueError:
+        print('Пожалуйста, введите корректный рост (число).')
 
 
-# Сохраняем значение нормы воды в мл на кг веса в константу
-WATER_PER_KG = 30
-# Используя формулу узнаем суточную норму воды в мл
-water_needed_ml = user_weight * WATER_PER_KG
-# Переводим норму воды из мл в л
-water_needed_l = water_needed_ml / 1000
+# Вычисляем ИМТ и норму воды
+bmi = user_weight / user_height ** 2
+water_needed_l = user_weight * WATER_PER_KG
 
 
-# 4. Условие для правильного отображения "л." или "г."
-# при выводе возраста в отчет
-if len(user_age) == 1:
-    if int(user_age[0]) < 5:
+'''Условие для правильного отображения "л." или "г."
+ при выводе возраста в отчет'''
+user_age_str = str(user_age)
+if len(user_age_str) == 1:
+    if 0 < int(user_age_str[0]) < 5:
         year_letter = "г."
     else:
         year_letter = "л."
 else:
-    if 0 < int(user_age[1]) < 5:
+    if 10 <= int(user_age_str) <= 19:
+        year_letter = "л."
+    elif 0 < int(user_age_str[1]) < 5:
         year_letter = "г."
     else:
         year_letter = "л."
 
 
-# 5. Вывод отчета
-# Выводим отчет содержащий возраст, ИМТ (округленный до 1 знака) и норму воды.
-print('=' * 50)
-print('-' * 50)
-print(f"Отчет для пользователя: {user_name} ({user_age} {year_letter})")
-print('-' * 50)
-print(f"Ваш Индекс Массы Тела: {round(bmi, 1)}")
-print(f"Рекомендованая норма воды: {round(water_needed_l, 1)} л. в день")
-print('-' * 50)
-print("Расчет окончен. Будьте здоровы!")
+# Создаем отчет содержащий возраст, ИМТ (округленный до 1 знака) и норму воды.
+report_text = (
+    f'{THE_CUTOFF}\n'
+    f"{THE_CUTOFF}\n"
+    f"Отчёт для пользователя: {user_name} ({user_age} {year_letter})\n"
+    f"{THE_CUTOFF}\n"
+    f"Ваш Индекс Массы Тела: {round(bmi, 1)}\n"
+    f"Рекомендованная норма воды: {round(water_needed_l, 1)} л. в день\n"
+    f"{THE_CUTOFF}\n"
+    f"Расчёт окончен. Будьте здоровы!"
+)
+
+
+print(report_text)

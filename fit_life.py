@@ -1,7 +1,6 @@
 # Проект FitLife - MVP версия 1.0
 from constants import THE_CUTOFF, WATER_PER_KG
 
-
 # Запрашиваем данные пользователя
 user_name = (input("Как Вас зовут?  ")).strip().title()
 print(f"Добрый день, {user_name}!")
@@ -42,8 +41,8 @@ bmi = user_weight / user_height ** 2
 water_needed_l = user_weight * WATER_PER_KG
 
 
-'''Условие для правильного отображения "л." или "г."
- при выводе возраста в отчет'''
+"""Условие для правильного отображения "л." или "г."
+при выводе возраста в отчет"""
 user_age_str = str(user_age)
 if len(user_age_str) == 1:
     if 0 < int(user_age_str[0]) < 5:

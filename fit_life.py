@@ -41,7 +41,7 @@ if len(user_age) == 1:
     else:
         year_letter = "л."
 else:
-    if int(user_age[1]) < 5:
+    if 0 < int(user_age[1]) < 5:
         year_letter = "г."
     else:
         year_letter = "л."
